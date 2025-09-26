@@ -5,6 +5,7 @@ LICENSE = "MIT"
 IMAGE_INSTALL = "\
     packagegroup-core-boot \
     ${CORE_IMAGE_EXTRA_INSTALL} \
+    openssh \
 "
 
 inherit core-image
