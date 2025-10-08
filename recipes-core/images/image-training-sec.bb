@@ -2,6 +2,11 @@ SUMMARY = "Reference image for the Embedded security training"
 
 LICENSE = "MIT"
 
+IMAGE_INSTALL_DEBUGTOOLS = "\
+    gdb \
+    checksec \
+"
+
 IMAGE_INSTALL_SANITIZERS = "\
     libasan \
     libubsan \
@@ -13,9 +18,9 @@ IMAGE_INSTALL = "\
     packagegroup-core-boot \
     ${CORE_IMAGE_EXTRA_INSTALL} \
     ${IMAGE_INSTALL_SANITIZERS} \
+    ${IMAGE_INSTALL_DEBUGTOOLS} \
     bash \
     openssh \
-    gdb \
 "
 
 inherit core-image
