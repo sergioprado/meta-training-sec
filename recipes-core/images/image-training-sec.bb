@@ -5,6 +5,7 @@ LICENSE = "MIT"
 IMAGE_INSTALL_DEBUGTOOLS = "\
     gdb \
     checksec \
+    kernel-hardening-checker \
 "
 
 IMAGE_INSTALL_SANITIZERS = "\
