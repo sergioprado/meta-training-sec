@@ -1,8 +1,4 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI:append = "\
-    file://asan.cfg \
-"
-
 # include any machine specific configuration
-include linux-${MACHINE}.inc
+include u-boot-${MACHINE}.inc

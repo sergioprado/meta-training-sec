@@ -1,0 +1,7 @@
+/dts-v1/;
+
+#include "qemuarm64.dtsi"
+
+/ {
+    model = "ARM64 emulated platform for the Embedded Security training";
+};
