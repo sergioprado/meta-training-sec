@@ -15,11 +15,25 @@ IMAGE_INSTALL_SANITIZERS = "\
     libtsan \
 "
 
+IMAGE_INSTALL_DISKTOOLS = "\
+    e2fsprogs-mke2fs \
+    e2fsprogs-tune2fs \
+    e2fsprogs \
+"
+
+IMAGE_INSTALL_CRYPTOTOOLS = "\
+    cryptsetup \
+    fscryptctl \
+    keyutils \
+"
+
 IMAGE_INSTALL = "\
     packagegroup-core-boot \
     ${CORE_IMAGE_EXTRA_INSTALL} \
     ${IMAGE_INSTALL_SANITIZERS} \
     ${IMAGE_INSTALL_DEBUGTOOLS} \
+    ${IMAGE_INSTALL_DISKTOOLS} \
+    ${IMAGE_INSTALL_CRYPTOTOOLS} \
     bash \
     util-linux \
     openssh \
