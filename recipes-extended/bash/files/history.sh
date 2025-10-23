@@ -1,0 +1,5 @@
+HISTFILE="/home/$USER/.bash_history"
+HISTSIZE=5000
+HISTFILESIZE=10000
+HISTCONTROL=ignoreboth
+PROMPT_COMMAND='history -a; history -n; '"$PROMPT_COMMAND"
