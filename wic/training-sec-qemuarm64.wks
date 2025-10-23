@@ -1,3 +1,3 @@
 part /boot --source bootimg-partition --ondisk sda --fstype=ext4 --use-uuid --label boot --active --align 1024
 part / --source rootfs --ondisk sda --fstype=ext4 --label root --align 4 --use-uuid
-part /data --ondisk sda --fstype=ext4 --label data --fixed-size 512M --use-uuid
+part /data --ondisk sda --fstype=ext4 --label data --fixed-size 512M --use-uuid --fsoptions "defaults,noauto"
