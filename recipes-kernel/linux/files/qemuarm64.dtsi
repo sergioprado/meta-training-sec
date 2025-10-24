@@ -1,13 +1,11 @@
 /dts-v1/;
 
 /*
-  Generated with:
-
-$ runqemu qemuarm64 qemuparams="-machine dumpdtb=qemu.dtb"
-$ dtc -I dtb -O dts -o qemu.dts qemu.dtb
-
+  This device tree was extracted from a running build of the 'qemuarm64-secureboot' machine
+  # cp /sys/firmware/fdt kernel.dtb
+  # dtc -I dtb -O dts -o kernel.dts kernel.dtb
 */
-
+/memreserve/	0x000000007bec9000 0x0000000001790200;
 / {
 	interrupt-parent = <0x8005>;
 	model = "linux,dummy-virt";
@@ -15,17 +13,41 @@ $ dtc -I dtb -O dts -o qemu.dts qemu.dtb
 	#address-cells = <0x02>;
 	compatible = "linux,dummy-virt";
 
+	reserved-memory {
+		ranges;
+		#size-cells = <0x02>;
+		#address-cells = <0x02>;
+
+		optee_core@e100000 {
+			no-map;
+			reg = <0x00 0xe100000 0x00 0xf00000>;
+		};
+
+		optee_shm@42000000 {
+			no-map;
+			reg = <0x00 0x42000000 0x00 0x200000>;
+		};
+	};
+
+	firmware {
+
+		optee {
+			interrupts = <0x00 0xbb 0x01>;
+			method = "smc";
+			compatible = "linaro,optee-tz";
+		};
+	};
+
 	psci {
-		migrate = <0xc4000005>;
 		cpu_on = <0xc4000003>;
 		cpu_off = <0x84000002>;
 		cpu_suspend = <0xc4000001>;
-		method = "hvc";
+		method = "smc";
 		compatible = "arm,psci-1.0\0arm,psci-0.2\0arm,psci";
 	};
 
 	memory@40000000 {
-		reg = <0x00 0x40000000 0x00 0x10000000>;
+		reg = <0x00 0x40000000 0x00 0x40000000>;
 		device_type = "memory";
 	};
 
@@ -267,6 +289,54 @@ $ dtc -I dtb -O dts -o qemu.dts qemu.dtb
 		compatible = "virtio,mmio";
 	};
 
+	gpio-restart {
+		secure-status = "okay";
+		status = "disabled";
+		gpios = <0x8008 0x01 0x00>;
+		compatible = "gpio-restart";
+	};
+
+	gpio-poweroff {
+		secure-status = "okay";
+		status = "disabled";
+		gpios = <0x8008 0x00 0x00>;
+		compatible = "gpio-poweroff";
+	};
+
+	pl061@90b0000 {
+		secure-status = "okay";
+		status = "disabled";
+		phandle = <0x8008>;
+		clock-names = "apb_pclk";
+		clocks = <0x8000>;
+		interrupts = <0x00 0x00 0x04>;
+		gpio-controller;
+		#gpio-cells = <0x02>;
+		compatible = "arm,pl061\0arm,primecell";
+		reg = <0x00 0x90b0000 0x00 0x1000>;
+	};
+
+	gpio-keys {
+		compatible = "gpio-keys";
+
+		poweroff {
+			gpios = <0x8007 0x03 0x00>;
+			linux,code = <0x74>;
+			label = "GPIO Key Poweroff";
+		};
+	};
+
+	pl061@9030000 {
+		phandle = <0x8007>;
+		clock-names = "apb_pclk";
+		clocks = <0x8000>;
+		interrupts = <0x00 0x07 0x04>;
+		gpio-controller;
+		#gpio-cells = <0x02>;
+		compatible = "arm,pl061\0arm,primecell";
+		reg = <0x00 0x9030000 0x00 0x1000>;
+	};
+
 	pcie@10000000 {
 		interrupt-map-mask = <0x1800 0x00 0x00 0x07>;
 		interrupt-map = <0x00 0x00 0x00 0x01 0x8005 0x00 0x00 0x00 0x03 0x04 0x00 0x00 0x00 0x02 0x8005 0x00 0x00 0x00 0x04 0x04 0x00 0x00 0x00 0x03 0x8005 0x00 0x00 0x00 0x05 0x04 0x00 0x00 0x00 0x04 0x8005 0x00 0x00 0x00 0x06 0x04 0x800 0x00 0x00 0x01 0x8005 0x00 0x00 0x00 0x04 0x04 0x800 0x00 0x00 0x02 0x8005 0x00 0x00 0x00 0x05 0x04 0x800 0x00 0x00 0x03 0x8005 0x00 0x00 0x00 0x06 0x04 0x800 0x00 0x00 0x04 0x8005 0x00 0x00 0x00 0x03 0x04 0x1000 0x00 0x00 0x01 0x8005 0x00 0x00 0x00 0x05 0x04 0x1000 0x00 0x00 0x02 0x8005 0x00 0x00 0x00 0x06 0x04 0x1000 0x00 0x00 0x03 0x8005 0x00 0x00 0x00 0x03 0x04 0x1000 0x00 0x00 0x04 0x8005 0x00 0x00 0x00 0x04 0x04 0x1800 0x00 0x00 0x01 0x8005 0x00 0x00 0x00 0x06 0x04 0x1800 0x00 0x00 0x02 0x8005 0x00 0x00 0x00 0x03 0x04 0x1800 0x00 0x00 0x03 0x8005 0x00 0x00 0x00 0x04 0x04 0x1800 0x00 0x00 0x04 0x8005 0x00 0x00 0x00 0x05 0x04>;
@@ -289,6 +359,23 @@ $ dtc -I dtb -O dts -o qemu.dts qemu.dtb
 		interrupts = <0x00 0x02 0x04>;
 		reg = <0x00 0x9010000 0x00 0x1000>;
 		compatible = "arm,pl031\0arm,primecell";
+	};
+
+	pl011@9040000 {
+		secure-status = "okay";
+		status = "disabled";
+		clock-names = "uartclk\0apb_pclk";
+		clocks = <0x8000 0x8000>;
+		interrupts = <0x00 0x08 0x04>;
+		reg = <0x00 0x9040000 0x00 0x1000>;
+		compatible = "arm,pl011\0arm,primecell";
+	};
+
+	secram@e000000 {
+		secure-status = "okay";
+		status = "disabled";
+		reg = <0x00 0xe000000 0x00 0x1000000>;
+		device_type = "memory";
 	};
 
 	pl011@9000000 {
@@ -322,9 +409,17 @@ $ dtc -I dtb -O dts -o qemu.dts qemu.dtb
 		};
 	};
 
-	flash@0 {
+	flash@4000000 {
 		bank-width = <0x04>;
-		reg = <0x00 0x00 0x00 0x4000000 0x00 0x4000000 0x00 0x4000000>;
+		reg = <0x00 0x4000000 0x00 0x4000000>;
+		compatible = "cfi-flash";
+	};
+
+	secflash@0 {
+		secure-status = "okay";
+		status = "disabled";
+		bank-width = <0x04>;
+		reg = <0x00 0x00 0x00 0x4000000>;
 		compatible = "cfi-flash";
 	};
 
@@ -358,33 +453,33 @@ $ dtc -I dtb -O dts -o qemu.dts qemu.dtb
 		};
 
 		cpu@0 {
+			enable-method = "psci";
 			phandle = <0x8004>;
 			reg = <0x00>;
-			enable-method = "psci";
 			compatible = "arm,cortex-a57";
 			device_type = "cpu";
 		};
 
 		cpu@1 {
+			enable-method = "psci";
 			phandle = <0x8003>;
 			reg = <0x01>;
-			enable-method = "psci";
 			compatible = "arm,cortex-a57";
 			device_type = "cpu";
 		};
 
 		cpu@2 {
+			enable-method = "psci";
 			phandle = <0x8002>;
 			reg = <0x02>;
-			enable-method = "psci";
 			compatible = "arm,cortex-a57";
 			device_type = "cpu";
 		};
 
 		cpu@3 {
+			enable-method = "psci";
 			phandle = <0x8001>;
 			reg = <0x03>;
-			enable-method = "psci";
 			compatible = "arm,cortex-a57";
 			device_type = "cpu";
 		};
@@ -404,9 +499,18 @@ $ dtc -I dtb -O dts -o qemu.dts qemu.dtb
 		compatible = "fixed-clock";
 	};
 
+	secure-chosen {
+		stdout-path = "/pl011@9040000";
+		rng-seed = <0x763c70c3 0x9ef00731 0xc2658995 0x9878c511 0xe22eaec 0x60249c89 0x53108ab3 0xc4a08494>;
+		kaslr-seed = <0x3bbfd61d 0x28c16178>;
+	};
+
 	chosen {
+		linux,initrd-end = <0x00 0x7d659200>;
+		linux,initrd-start = <0x00 0x7bec9000>;
+		u-boot,version = "2024.01";
+		bootargs = "root=/dev/vda2 rw  mem=1024M ip=192.168.7.2::192.168.7.1:255.255.255.0::eth0:off:8.8.8.8 net.ifnames=0 console=ttyAMA0 console=hvc0 swiotlb=0 ";
 		stdout-path = "/pl011@9000000";
-		rng-seed = <0x3a9c8992 0x7bd46cda 0xdee95e6c 0x677fa356 0x43493824 0x815d5d94 0x328d49cb 0x89173bf3>;
-		kaslr-seed = <0x40d2c297 0xa326edf1>;
+		kaslr-seed = <0xc3ff8926 0xf64471c7>;
 	};
 };

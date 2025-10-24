@@ -3,5 +3,5 @@
 #include "qemuarm64.dtsi"
 
 / {
-    model = "ARM64 emulated platform for the Embedded Security training";
+	model = "ARM64 emulated platform for the Embedded Security training";
 };

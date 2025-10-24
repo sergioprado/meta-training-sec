@@ -25,6 +25,15 @@ IMAGE_INSTALL_CRYPTOTOOLS = "\
     cryptsetup \
     fscryptctl \
     keyutils \
+    tpm2-tools \
+    libtss2-tcti-device \
+"
+
+IMAGE_INSTALL_OPTEE = "\
+    optee-client \
+    optee-ftpm \
+    optee-test \
+    optee-examples \
 "
 
 IMAGE_INSTALL = "\
@@ -34,6 +43,7 @@ IMAGE_INSTALL = "\
     ${IMAGE_INSTALL_DEBUGTOOLS} \
     ${IMAGE_INSTALL_DISKTOOLS} \
     ${IMAGE_INSTALL_CRYPTOTOOLS} \
+    ${IMAGE_INSTALL_OPTEE} \
     bash \
     util-linux \
     openssh \

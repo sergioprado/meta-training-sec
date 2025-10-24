@@ -1,3 +1,3 @@
 SRC_URI:append = "\
-    file://qemuarm64.cfg \
+    file://qemuarm64-custom.cfg \
 "
