@@ -52,6 +52,9 @@ IMAGE_INSTALL = "\
     openssh \
 "
 
+# additional configuration for booting a signed rootfs image
+require ${@ 'training-sec-image-signed.inc' if 'signed' in d.getVar('OVERRIDES').split(':') else ''}
+
 inherit core-image
 
 inherit extrausers

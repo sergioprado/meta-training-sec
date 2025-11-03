@@ -1,0 +1,3 @@
+part /boot --source bootimg-partition --ondisk sda --fstype=ext4 --use-uuid --label boot --active --align 1024
+part / --source rawcopy --ondisk sda --sourceparams="file=${IMGDEPLOYDIR}/${DM_VERITY_IMAGE}-${MACHINE}.rootfs.${DM_VERITY_IMAGE_TYPE}.verity"
+part /data --ondisk sda --fstype=ext4 --label data --fixed-size 512M --use-uuid --fsoptions "defaults,noauto"

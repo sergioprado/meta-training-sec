@@ -23,4 +23,7 @@ PACKAGE_EXCLUDE = "kernel-image-*"
 IMAGE_FSTYPES = "${INITRAMFS_FSTYPES}"
 IMAGE_NAME_SUFFIX ?= ""
 
+# additional configuration for booting a signed rootfs image
+require ${@ 'training-sec-image-ramdisk-signed.inc' if 'signed' in d.getVar('OVERRIDES').split(':') else ''}
+
 inherit core-image
