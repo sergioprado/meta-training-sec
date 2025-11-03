@@ -1,0 +1,38 @@
+#!/bin/sh
+
+MACHINE="qemuarm64"
+IMGDIR="$PWD/tmp-glibc/deploy/images/$MACHINE"
+
+UBOOT_DTB="$IMGDIR/u-boot.dtb"
+QEMU_DTB="$IMGDIR/qemu.dtb"
+MERGED_DTB="$IMGDIR/merged.dtb"
+
+if [ ! -d "$IMGDIR" ]; then
+    echo "Error: images directory not found!"
+    echo "Please run this script from OE build directory."
+    exit 1
+fi
+
+if [ ! -f "$UBOOT_DTB" ]; then
+    echo "Error: U-Boot DTB file not found [$UBOOT_DTB]!"
+    echo "Make sure U-Boot is built before running this script."
+    exit 1
+fi
+
+# generate QEMU DTB
+rm -Rf "$QEMU_DTB"
+runqemu --quiet qemuparams="-machine dumpdtb=$QEMU_DTB"
+if [ ! -f "$QEMU_DTB" ]; then
+    echo "Error: Could not generate QEMU DTB [$QEMU_DTB]!"
+    exit 1
+fi
+
+# merge QEMU DTB with U-Boot DTB
+rm -Rf "$MERGED_DTB"
+cat <(dtc -q -I dtb "$QEMU_DTB") <(dtc -q -I dtb "$UBOOT_DTB" | grep -v /dts-v1/) | dtc -q - -o "$MERGED_DTB"
+if [ ! -f "$MERGED_DTB" ]; then
+    echo "Error: Could not generate merged DTB [$MERGED_DTB]!"
+    exit 1
+fi
+
+runqemu "$@" qemuparams="-dtb $MERGED_DTB"
