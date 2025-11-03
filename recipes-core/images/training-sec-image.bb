@@ -19,6 +19,7 @@ IMAGE_INSTALL_DISKTOOLS = "\
     e2fsprogs-mke2fs \
     e2fsprogs-tune2fs \
     e2fsprogs \
+    fio \
 "
 
 IMAGE_INSTALL_CRYPTOTOOLS = "\
@@ -46,6 +47,8 @@ IMAGE_INSTALL = "\
     ${IMAGE_INSTALL_OPTEE} \
     bash \
     util-linux \
+    coreutils \
+    vim-xxd \
     openssh \
 "
 
