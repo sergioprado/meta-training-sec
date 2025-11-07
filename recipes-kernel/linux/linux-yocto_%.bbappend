@@ -3,6 +3,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 SRC_URI:append = "\
     file://asan.cfg \
     file://dm-verity.cfg \
+    file://dm-integrity.cfg \
     file://fs-verity.cfg \
     file://module-sig.cfg \
     file://devkey.pem \
