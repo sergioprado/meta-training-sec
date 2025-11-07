@@ -1,0 +1,13 @@
+#/bin/bash
+
+export CN="/CN=Training dev key"
+export KN="devkey"
+
+# generate RSA private key
+openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 -out $KN.pem
+
+# create a self-signed X.509 certificate in DER format
+openssl req -x509 -new -sha256 -days 3650 -subj "$CN" -key $KN.pem -outform DER -out $KN-cert.der
+
+# convert DER cert to PEM format
+openssl x509 -in $KN-cert.der -inform DER -out $KN-cert.pem
