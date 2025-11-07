@@ -29,6 +29,7 @@ IMAGE_INSTALL_CRYPTOTOOLS = "\
     tpm2-tools \
     libtss2-tcti-device \
     cryptsetup \
+    fsverity-utils \
 "
 
 IMAGE_INSTALL_OPTEE = "\
