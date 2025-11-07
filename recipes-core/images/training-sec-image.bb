@@ -64,7 +64,8 @@ EXTRA_USERS_PARAMS = "\
 "
 
 create_custom_dirs() {
-    install -d ${IMAGE_ROOTFS}/data
+    install -d ${IMAGE_ROOTFS}/apps
     install -d ${IMAGE_ROOTFS}/config
+    install -d ${IMAGE_ROOTFS}/data
 }
 IMAGE_PREPROCESS_COMMAND += "create_custom_dirs;"
