@@ -38,6 +38,10 @@ IMAGE_INSTALL_OPTEE = "\
     optee-examples \
 "
 
+IMAGE_INSTALL_TRAINING = "\
+    devkey-cert \
+"
+
 IMAGE_INSTALL = "\
     packagegroup-core-boot \
     ${CORE_IMAGE_EXTRA_INSTALL} \
@@ -46,6 +50,7 @@ IMAGE_INSTALL = "\
     ${IMAGE_INSTALL_DISKTOOLS} \
     ${IMAGE_INSTALL_CRYPTOTOOLS} \
     ${IMAGE_INSTALL_OPTEE} \
+    ${IMAGE_INSTALL_TRAINING} \
     bash \
     util-linux \
     coreutils \
