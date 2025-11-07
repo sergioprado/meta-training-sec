@@ -43,6 +43,10 @@ IMAGE_INSTALL_TRAINING = "\
     devkey-cert \
 "
 
+IMAGE_INSTALL_KERNEL = "\
+    kernel-modules \
+"
+
 IMAGE_INSTALL = "\
     packagegroup-core-boot \
     ${CORE_IMAGE_EXTRA_INSTALL} \
@@ -52,11 +56,16 @@ IMAGE_INSTALL = "\
     ${IMAGE_INSTALL_CRYPTOTOOLS} \
     ${IMAGE_INSTALL_OPTEE} \
     ${IMAGE_INSTALL_TRAINING} \
+    ${IMAGE_INSTALL_KERNEL} \
     bash \
     util-linux \
     coreutils \
     vim-xxd \
     openssh \
+"
+
+TOOLCHAIN_TARGET_TASK:append = "\
+    kernel-devsrc \
 "
 
 # additional configuration for booting a signed rootfs image

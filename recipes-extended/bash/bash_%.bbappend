@@ -8,6 +8,9 @@ setup_history() {
     install -d ${D}/${sysconfdir}/profile.d
     install -m 664 ${WORKDIR}/history.sh ${D}/${sysconfdir}/profile.d/history.sh
 }
+setup_history:class-nativesdk() {
+    echo "Nothing to be done"
+}
 setup_history:signed() {
     echo "Nothing to be done"
 }
