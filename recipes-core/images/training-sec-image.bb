@@ -28,6 +28,7 @@ IMAGE_INSTALL_CRYPTOTOOLS = "\
     keyutils \
     tpm2-tools \
     libtss2-tcti-device \
+    cryptsetup \
 "
 
 IMAGE_INSTALL_OPTEE = "\

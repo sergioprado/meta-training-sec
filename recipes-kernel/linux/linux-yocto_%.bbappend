@@ -2,9 +2,6 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI:append = "\
     file://asan.cfg \
-"
-
-SRC_URI:append:signed = "\
     file://dm-verity.cfg \
 "
 
