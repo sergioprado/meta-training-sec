@@ -32,6 +32,12 @@ IMAGE_INSTALL_CRYPTOTOOLS = "\
     fsverity-utils \
 "
 
+IMAGE_INSTALL_AUTHUTILS = "\
+    libpam \
+    google-authenticator-libpam \
+    pam-google-authenticator \
+"
+
 IMAGE_INSTALL_OPTEE = "\
     optee-client \
     optee-ftpm \
@@ -69,6 +75,7 @@ IMAGE_INSTALL = "\
     ${IMAGE_INSTALL_DEBUGTOOLS} \
     ${IMAGE_INSTALL_DISKTOOLS} \
     ${IMAGE_INSTALL_CRYPTOTOOLS} \
+    ${IMAGE_INSTALL_AUTHUTILS} \
     ${IMAGE_INSTALL_OPTEE} \
     ${IMAGE_INSTALL_TRAINING} \
     ${IMAGE_INSTALL_EDITORS} \
