@@ -43,6 +43,21 @@ IMAGE_INSTALL_TRAINING = "\
     devkey-cert \
 "
 
+IMAGE_INSTALL_EDITORS = "\
+    vim-xxd \
+"
+
+IMAGE_INSTALL_SERVERS = "\
+    openssh \
+"
+
+IMAGE_INSTALL_UTILS = "\
+    bash \
+    util-linux \
+    coreutils \
+    expect \
+"
+
 IMAGE_INSTALL_KERNEL = "\
     kernel-modules \
 "
@@ -56,12 +71,10 @@ IMAGE_INSTALL = "\
     ${IMAGE_INSTALL_CRYPTOTOOLS} \
     ${IMAGE_INSTALL_OPTEE} \
     ${IMAGE_INSTALL_TRAINING} \
+    ${IMAGE_INSTALL_EDITORS} \
+    ${IMAGE_INSTALL_SERVERS} \
+    ${IMAGE_INSTALL_UTILS} \
     ${IMAGE_INSTALL_KERNEL} \
-    bash \
-    util-linux \
-    coreutils \
-    vim-xxd \
-    openssh \
 "
 
 TOOLCHAIN_TARGET_TASK:append = "\
