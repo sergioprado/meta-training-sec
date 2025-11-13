@@ -5,6 +5,8 @@ LICENSE = "MIT"
 IMAGE_INSTALL_DEBUGTOOLS = "\
     gdb \
     checksec \
+    strace \
+    ltrace \
     kernel-hardening-checker \
 "
 
@@ -62,6 +64,7 @@ IMAGE_INSTALL_UTILS = "\
     util-linux \
     coreutils \
     expect \
+    libcap-bin \
 "
 
 IMAGE_INSTALL_KERNEL = "\
