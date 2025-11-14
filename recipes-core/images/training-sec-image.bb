@@ -49,6 +49,10 @@ IMAGE_INSTALL_OPTEE = "\
     optee-examples \
 "
 
+IMAGE_INSTALL_SELINUX = "\
+    packagegroup-core-selinux \
+"
+
 IMAGE_INSTALL_TRAINING = "\
     devkey-cert \
 "
@@ -87,6 +91,7 @@ IMAGE_INSTALL = "\
     ${IMAGE_INSTALL_SERVERS} \
     ${IMAGE_INSTALL_UTILS} \
     ${IMAGE_INSTALL_KERNEL} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'selinux', '${IMAGE_INSTALL_SELINUX}', '', d)} \
 "
 
 TOOLCHAIN_TARGET_TASK:append = "\
