@@ -2,12 +2,13 @@ SUMMARY = "Reference image for the Embedded security training"
 
 LICENSE = "MIT"
 
-IMAGE_INSTALL_DEBUGTOOLS = "\
+IMAGE_INSTALL_DEBUG_TOOLS = "\
     gdb \
     checksec \
     strace \
     ltrace \
     kernel-hardening-checker \
+    fio \
 "
 
 IMAGE_INSTALL_SANITIZERS = "\
@@ -17,14 +18,15 @@ IMAGE_INSTALL_SANITIZERS = "\
     libtsan \
 "
 
-IMAGE_INSTALL_DISKTOOLS = "\
+IMAGE_INSTALL_FS_TOOLS = "\
     e2fsprogs-mke2fs \
     e2fsprogs-tune2fs \
     e2fsprogs \
-    fio \
+    attr \
+    acl \
 "
 
-IMAGE_INSTALL_CRYPTOTOOLS = "\
+IMAGE_INSTALL_CRYPTO_TOOLS = "\
     cryptsetup \
     fscryptctl \
     keyutils \
@@ -34,7 +36,7 @@ IMAGE_INSTALL_CRYPTOTOOLS = "\
     fsverity-utils \
 "
 
-IMAGE_INSTALL_AUTHUTILS = "\
+IMAGE_INSTALL_AUTH_UTILS = "\
     libpam \
     google-authenticator-libpam \
     pam-google-authenticator \
@@ -75,10 +77,10 @@ IMAGE_INSTALL = "\
     packagegroup-core-boot \
     ${CORE_IMAGE_EXTRA_INSTALL} \
     ${IMAGE_INSTALL_SANITIZERS} \
-    ${IMAGE_INSTALL_DEBUGTOOLS} \
-    ${IMAGE_INSTALL_DISKTOOLS} \
-    ${IMAGE_INSTALL_CRYPTOTOOLS} \
-    ${IMAGE_INSTALL_AUTHUTILS} \
+    ${IMAGE_INSTALL_DEBUG_TOOLS} \
+    ${IMAGE_INSTALL_FS_TOOLS} \
+    ${IMAGE_INSTALL_CRYPTO_TOOLS} \
+    ${IMAGE_INSTALL_AUTH_UTILS} \
     ${IMAGE_INSTALL_OPTEE} \
     ${IMAGE_INSTALL_TRAINING} \
     ${IMAGE_INSTALL_EDITORS} \
@@ -96,9 +98,13 @@ require ${@ 'training-sec-image-signed.inc' if 'signed' in d.getVar('OVERRIDES')
 
 inherit core-image
 
+# create additional users
+# admin password is admin1234
 inherit extrausers
 EXTRA_USERS_PARAMS = "\
     useradd -p '\$5\$E5EBd5883/YCbeoG\$Y4htCJOL9kbxv7y1ry.wjA/sCM6PohASz8C2U4cbzxD' admin; \
+    useradd user1; \
+    useradd user2; \
 "
 
 create_custom_dirs() {
