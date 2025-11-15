@@ -6,6 +6,7 @@ SRC_URI:append = "\
     file://dm-integrity.cfg \
     file://fs-verity.cfg \
     file://module-sig.cfg \
+    file://audit.cfg \
     file://devkey.pem \
     file://devkey-cert.pem \
 "

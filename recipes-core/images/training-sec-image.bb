@@ -63,6 +63,7 @@ IMAGE_INSTALL_EDITORS = "\
 
 IMAGE_INSTALL_SERVERS = "\
     openssh \
+    auditd \
 "
 
 IMAGE_INSTALL_UTILS = "\
