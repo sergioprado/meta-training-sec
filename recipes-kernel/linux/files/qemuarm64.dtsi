@@ -509,7 +509,7 @@
 		linux,initrd-end = <0x00 0x7d659200>;
 		linux,initrd-start = <0x00 0x7bec9000>;
 		u-boot,version = "2024.01";
-		bootargs = "root=/dev/vda2 rw  mem=1024M ip=192.168.7.2::192.168.7.1:255.255.255.0::eth0:off:8.8.8.8 net.ifnames=0 console=ttyAMA0 console=hvc0 swiotlb=0 ";
+		bootargs = "root=/dev/vda2 rw ip=192.168.7.2::192.168.7.1:255.255.255.0::eth0:off:8.8.8.8 net.ifnames=0 console=ttyAMA0 console=hvc0 swiotlb=0 ";
 		stdout-path = "/pl011@9000000";
 		kaslr-seed = <0xc3ff8926 0xf64471c7>;
 	};
