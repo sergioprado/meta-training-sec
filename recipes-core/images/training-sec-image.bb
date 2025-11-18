@@ -76,6 +76,7 @@ IMAGE_INSTALL_UTILS = "\
     coreutils \
     expect \
     libcap-bin \
+    netcat \
 "
 
 IMAGE_INSTALL_KERNEL = "\
