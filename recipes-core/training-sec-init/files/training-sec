@@ -1,0 +1,39 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          training-sec-init
+# Required-Start:    $remote_fs $network
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: Init environment for the Embedded Security training
+### END INIT INFO
+
+SCRIPT=/usr/bin/training-sec-init.sh
+NAME=training-sec-init
+
+case "$1" in
+  start)
+    echo "Running $NAME..."
+    if [ -x "$SCRIPT" ]; then
+        "$SCRIPT"
+    else
+        echo "Error: $SCRIPT not found or not executable."
+        exit 1
+    fi
+    ;;
+  stop)
+    # nothing to do, it's a one-shot script
+    ;;
+  restart)
+    "$0" start
+    ;;
+  status)
+    echo "$NAME is a one-shot service; it only runs at start."
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart|status}"
+    exit 1
+    ;;
+esac
+
+exit 0

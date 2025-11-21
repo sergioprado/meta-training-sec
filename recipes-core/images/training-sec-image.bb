@@ -65,6 +65,7 @@ IMAGE_INSTALL_SELINUX = "\
 "
 
 IMAGE_INSTALL_TRAINING = "\
+    training-sec-init \
     devkey-cert \
 "
 
