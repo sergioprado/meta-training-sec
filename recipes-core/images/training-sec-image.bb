@@ -49,6 +49,9 @@ IMAGE_INSTALL_AUTH_UTILS = "\
 IMAGE_INSTALL_SANDBOX_TOOLS = "\
     bubblewrap \
 "
+IMAGE_INSTALL_SANDBOX_TOOLS:docker += "\
+    docker \
+"
 
 IMAGE_INSTALL_OPTEE = "\
     optee-client \
@@ -112,6 +115,9 @@ TOOLCHAIN_TARGET_TASK:append = "\
 
 # additional configuration for booting a signed rootfs image
 require ${@ 'training-sec-image-signed.inc' if 'signed' in d.getVar('OVERRIDES').split(':') else ''}
+
+# extra space needed when building with Docker
+IMAGE_ROOTFS_EXTRA_SPACE:docker = "262144"
 
 inherit core-image
 
