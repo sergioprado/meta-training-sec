@@ -46,6 +46,10 @@ IMAGE_INSTALL_AUTH_UTILS = "\
     pam-google-authenticator \
 "
 
+IMAGE_INSTALL_SANDBOX_TOOLS = "\
+    bubblewrap \
+"
+
 IMAGE_INSTALL_OPTEE = "\
     optee-client \
     optee-ftpm \
@@ -92,6 +96,7 @@ IMAGE_INSTALL = "\
     ${IMAGE_INSTALL_FS_TOOLS} \
     ${IMAGE_INSTALL_CRYPTO_TOOLS} \
     ${IMAGE_INSTALL_AUTH_UTILS} \
+    ${IMAGE_INSTALL_SANDBOX_TOOLS} \
     ${IMAGE_INSTALL_OPTEE} \
     ${IMAGE_INSTALL_TRAINING} \
     ${IMAGE_INSTALL_EDITORS} \
