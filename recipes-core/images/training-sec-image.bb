@@ -54,6 +54,7 @@ IMAGE_INSTALL_SANDBOX_TOOLS:docker += "\
 "
 
 IMAGE_INSTALL_OPTEE = "\
+    optee-os-ta \
     optee-client \
     optee-ftpm \
     optee-test \
@@ -112,6 +113,10 @@ IMAGE_INSTALL = "\
 
 TOOLCHAIN_TARGET_TASK:append = "\
     kernel-devsrc \
+"
+
+TOOLCHAIN_HOST_TASK:append = "\
+    nativesdk-python3-cryptography \
 "
 
 # additional configuration for booting a signed rootfs image
