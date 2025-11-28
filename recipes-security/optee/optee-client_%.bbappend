@@ -1,0 +1,3 @@
+EXTRA_OECMAKE:append = "\
+    -DCFG_TEE_SUPP_LOG_LEVEL=4 \
+"
