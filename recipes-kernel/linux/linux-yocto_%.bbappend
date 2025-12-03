@@ -8,6 +8,7 @@ SRC_URI:append = "\
     file://module-sig.cfg \
     file://audit.cfg \
     file://cgroups.cfg \
+    file://wireguard.cfg \
     file://devkey.pem \
     file://devkey-cert.pem \
 "
