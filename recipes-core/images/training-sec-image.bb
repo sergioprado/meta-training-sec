@@ -15,6 +15,12 @@ IMAGE_INSTALL_SCAN_TOOLS = "\
     lynis \
 "
 
+IMAGE_INSTALL_NETWORK_TOOLS = "\
+    openssh \
+    netcat \
+    wireguard-tools \
+"
+
 IMAGE_INSTALL_SANITIZERS = "\
     libasan \
     libubsan \
@@ -74,18 +80,13 @@ IMAGE_INSTALL_EDITORS = "\
     vim-xxd \
 "
 
-IMAGE_INSTALL_SERVERS = "\
-    openssh \
-    auditd \
-"
-
 IMAGE_INSTALL_UTILS = "\
     bash \
     util-linux \
     coreutils \
     expect \
     libcap-bin \
-    netcat \
+    auditd \
 "
 
 IMAGE_INSTALL_KERNEL = "\
@@ -98,6 +99,7 @@ IMAGE_INSTALL = "\
     ${IMAGE_INSTALL_SANITIZERS} \
     ${IMAGE_INSTALL_DEBUG_TOOLS} \
     ${IMAGE_INSTALL_SCAN_TOOLS} \
+    ${IMAGE_INSTALL_NETWORK_TOOLS} \
     ${IMAGE_INSTALL_FS_TOOLS} \
     ${IMAGE_INSTALL_CRYPTO_TOOLS} \
     ${IMAGE_INSTALL_AUTH_UTILS} \
@@ -105,7 +107,6 @@ IMAGE_INSTALL = "\
     ${IMAGE_INSTALL_OPTEE} \
     ${IMAGE_INSTALL_TRAINING} \
     ${IMAGE_INSTALL_EDITORS} \
-    ${IMAGE_INSTALL_SERVERS} \
     ${IMAGE_INSTALL_UTILS} \
     ${IMAGE_INSTALL_KERNEL} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'selinux', '${IMAGE_INSTALL_SELINUX}', '', d)} \
