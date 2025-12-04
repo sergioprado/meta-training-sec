@@ -17,6 +17,7 @@ IMAGE_INSTALL_SCAN_TOOLS = "\
 
 IMAGE_INSTALL_NETWORK_TOOLS = "\
     openssh \
+    nginx \
     netcat \
     curl \
     wireguard-tools \
