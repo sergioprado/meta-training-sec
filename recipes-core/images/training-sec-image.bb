@@ -20,6 +20,7 @@ IMAGE_INSTALL_NETWORK_TOOLS = "\
     netcat \
     curl \
     wireguard-tools \
+    nftables \
 "
 
 IMAGE_INSTALL_SANITIZERS = "\
