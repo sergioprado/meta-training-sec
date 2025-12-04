@@ -9,6 +9,7 @@ SRC_URI:append = "\
     file://audit.cfg \
     file://cgroups.cfg \
     file://wireguard.cfg \
+    file://netfilter.cfg \
     file://devkey.pem \
     file://devkey-cert.pem \
 "
