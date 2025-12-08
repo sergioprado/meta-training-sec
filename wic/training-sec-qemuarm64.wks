@@ -1,6 +1,7 @@
 bootloader --ptable gpt
 part /boot --source bootimg-partition --ondisk sda --fstype=ext4 --use-uuid --label boot --active --align 1024
-part / --source rootfs --ondisk sda --fstype=ext4 --label root --align 4 --use-uuid
+part / --source rootfs --ondisk sda --fstype=ext4 --label rootfs_a --align 4 --use-uuid
+part / --source rootfs --ondisk sda --fstype=ext4 --label rootfs_b --align 4 --use-uuid --fsoptions "defaults,noauto"
 part /apps   --ondisk sda --fstype=ext4 --label apps   --fixed-size 32M --use-uuid --fsoptions "defaults,noauto" --mkfs-extraopts="-O verity -b 4096"
 part /config --ondisk sda --fstype=ext4 --label config --fixed-size 32M --use-uuid --fsoptions "defaults,noauto"
 part /data   --ondisk sda --fstype=ext4 --label data   --fixed-size 64M --use-uuid --fsoptions "defaults,noauto"
