@@ -17,7 +17,8 @@ IMAGE_INSTALL_SCAN_TOOLS = "\
 
 IMAGE_INSTALL_NETWORK_TOOLS = "\
     openssh \
-    nginx \
+    lighttpd \
+    lighttpd-module-cgi \
     netcat \
     curl \
     wireguard-tools \
