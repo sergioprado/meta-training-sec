@@ -52,8 +52,10 @@ IMAGE_INSTALL_CRYPTO_TOOLS = "\
 
 IMAGE_INSTALL_AUTH_UTILS = "\
     libpam \
+    pam-plugin-faillock \
     google-authenticator-libpam \
     pam-google-authenticator \
+    libpwquality \
 "
 
 IMAGE_INSTALL_SANDBOX_TOOLS = "\
