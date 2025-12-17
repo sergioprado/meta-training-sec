@@ -141,6 +141,8 @@ EXTRA_USERS_PARAMS = "\
     useradd -p '\$5\$E5EBd5883/YCbeoG\$Y4htCJOL9kbxv7y1ry.wjA/sCM6PohASz8C2U4cbzxD' admin; \
     useradd user1; \
     useradd user2; \
+    useradd protouser; \
+    groupadd protouser; \
 "
 
 create_custom_dirs() {
