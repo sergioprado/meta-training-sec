@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Industrial Line Dashboard</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #111827;
+      color: #e5e7eb;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      margin-top: 0;
+      color: #38bdf8;
+    }
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      color: #9ca3af;
+      margin-bottom: 1rem;
+    }
+    .header-item strong {
+      color: #e5e7eb;
+    }
+    p {
+      max-width: 720px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .card {
+      background: #1f2937;
+      border-radius: 0.5rem;
+      padding: 1rem 1.2rem;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+    }
+    .label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #9ca3af;
+    }
+    .value {
+      font-size: 1.7rem;
+      font-weight: bold;
+      margin-top: 0.2rem;
+    }
+    .ok { color: #22c55e; }
+    .warn { color: #f97316; }
+    .crit { color: #ef4444; }
+    .footer {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+    .console {
+      margin-top: 2rem;
+      max-width: 720px;
+    }
+    .console textarea {
+      width: 100%;
+      min-height: 140px;
+      background: #020617;
+      color: #e5e7eb;
+      border: 1px solid #374151;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      font-family: monospace;
+      font-size: 0.9rem;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+    .console button {
+      margin-top: 0.6rem;
+      padding: 0.5rem 1.2rem;
+      border-radius: 999px;
+      border: none;
+      background: #38bdf8;
+      color: #020617;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .console button:hover {
+      background: #0ea5e9;
+    }
+    .console small {
+      display: block;
+      margin-top: 0.4rem;
+      color: #9ca3af;
+      font-size: 0.78rem;
+    }
+    .console-status {
+      margin-top: 0.4rem;
+      font-size: 0.85rem;
+    }
+    .console-status.ok {
+      color: #22c55e;
+    }
+    .console-status.err {
+      color: #f97316;
+    }
+  </style>
+</head>
+<body>
+  <h1>Industrial Line Dashboard</h1>
+
+  <div class="header">
+    <div class="header-item">
+      <strong>Device:</strong> <span id="deviceName">—</span>
+    </div>
+    <div class="header-item">
+      <strong>Linux distro:</strong> <span id="distroName">—</span>
+    </div>
+    <div class="header-item">
+      <strong>Date &amp; time:</strong> <span id="dateTime">—</span>
+    </div>
+  </div>
+
+  <p>
+    Compact overview of simulated sensor readings and machine status running locally on this embedded gateway.
+    Below you will also find a small maintenance console that accepts configuration data from the operator - a
+    typical attack surface in real products and one of the reasons why we want this web UI locked inside a container.
+  </p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="label">Line 1 temperature</div>
+      <div id="temp1" class="value">-- °C</div>
+    </div>
+    <div class="card">
+      <div class="label">Line 2 pressure</div>
+      <div id="press2" class="value">-- bar</div>
+    </div>
+    <div class="card">
+      <div class="label">Machine A</div>
+      <div id="machA" class="value ok">Unknown</div>
+    </div>
+    <div class="card">
+      <div class="label">Machine B</div>
+      <div id="machB" class="value ok">Unknown</div>
+    </div>
+  </div>
+
+  <div class="card console">
+    <div class="label">Maintenance console</div>
+    <p style="margin-top:0.4rem;font-size:0.85rem;color:#d1d5db;">
+      Paste a JSON payload with override values and apply it to this dashboard. In a real system this could come
+      from a remote field technician or from an integration with a third-party system, and must never be trusted blindly.
+    </p>
+    <textarea id="userPayload" spellcheck="false">
+{
+  "temp1": 88.5,
+  "press2": 6.9,
+  "machineA": "Failure",
+  "machineB": "Running"
+}
+    </textarea>
+    <button id="applyPayload">Apply payload</button>
+    <small>
+      Expected fields: <code>temp1</code> (°C), <code>press2</code> (bar),
+      <code>machineA</code> and <code>machineB</code> (string: "Running", "Stopped" or "Failure").
+    </small>
+    <div id="consoleStatus" class="console-status"></div>
+  </div>
+
+  <div class="footer">
+    * Sensor data is simulated locally.
+  </div>
+
+  <script>
+    let customData = null;
+
+    function formatDateTimeDDMMYYYY(now) {
+      const dd = String(now.getDate()).padStart(2, '0');
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const yyyy = now.getFullYear();
+
+      const hh = String(now.getHours()).padStart(2, '0');
+      const min = String(now.getMinutes()).padStart(2, '0');
+      const ss = String(now.getSeconds()).padStart(2, '0');
+
+      // DD/MM/YYYY HH:MM:SS
+      return `${dd}/${mm}/${yyyy} ${hh}:${min}:${ss}`;
+    }
+
+    function updateMeta() {
+      var host = window.location.hostname || "edge-gateway-01";
+      document.getElementById("deviceName").textContent = host;
+
+      document.getElementById("distroName").textContent =
+        "Embedded Security Training OS (Yocto-based)";
+
+      var now = new Date();
+      document.getElementById("dateTime").textContent = formatDateTimeDDMMYYYY(now);
+    }
+
+    function applyDataToDashboard(data) {
+      const tempEl = document.getElementById('temp1');
+      const pressEl = document.getElementById('press2');
+      const machAEl = document.getElementById('machA');
+      const machBEl = document.getElementById('machB');
+
+      const temp = typeof data.temp1 === 'number'
+        ? data.temp1
+        : 60 + Math.random() * 30;
+
+      const press = typeof data.press2 === 'number'
+        ? data.press2
+        : 4 + Math.random() * 3;
+
+      tempEl.textContent = temp.toFixed(1) + ' °C';
+      pressEl.textContent = press.toFixed(2) + ' bar';
+
+      tempEl.className = 'value ' + (temp > 85 ? 'warn' : 'ok');
+      pressEl.className = 'value ' + (press > 6.5 ? 'warn' : 'ok');
+
+      const states = {
+        'Running': { label: 'Running', cls: 'ok' },
+        'Stopped': { label: 'Stopped', cls: 'warn' },
+        'Failure': { label: 'Failure', cls: 'crit' }
+      };
+
+      function randState() {
+        const all = Object.values(states);
+        return all[Math.floor(Math.random() * all.length)];
+      }
+
+      const sA = states[data.machineA] || randState();
+      const sB = states[data.machineB] || randState();
+
+      machAEl.textContent = sA.label;
+      machAEl.className = 'value ' + sA.cls;
+
+      machBEl.textContent = sB.label;
+      machBEl.className = 'value ' + sB.cls;
+    }
+
+    function simulateSensors() {
+      const data = customData || {};
+      applyDataToDashboard(data);
+    }
+
+    function handleApplyPayload() {
+      const textarea = document.getElementById('userPayload');
+      const statusEl = document.getElementById('consoleStatus');
+      const raw = textarea.value;
+
+      try {
+        const parsed = JSON.parse(raw);
+        customData = parsed;
+        statusEl.textContent = "Payload applied successfully. Dashboard values are now influenced by user-provided data.";
+        statusEl.className = "console-status ok";
+        simulateSensors();
+      } catch (e) {
+        statusEl.textContent = "Invalid JSON payload: " + e.message;
+        statusEl.className = "console-status err";
+      }
+    }
+
+    // Inicializa tudo
+    updateMeta();
+    simulateSensors();
+
+    // Atualiza meta continuamente e sensores a cada 2s
+    setInterval(updateMeta, 1000);
+    setInterval(simulateSensors, 2000);
+
+    // Hook do botão
+    document.getElementById('applyPayload').addEventListener('click', handleApplyPayload);
+  </script>
+</body>
+</html>
