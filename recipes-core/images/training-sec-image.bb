@@ -93,6 +93,7 @@ IMAGE_INSTALL_UTILS = "\
     expect \
     libcap-bin \
     auditd \
+    tree \
 "
 
 IMAGE_INSTALL_KERNEL = "\
