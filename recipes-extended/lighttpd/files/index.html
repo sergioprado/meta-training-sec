@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Embedded Labworks – Embedded Security Training Device</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --blue-dark: #0b2e4d;
+            --blue-light: #e8f0f7;
+            --orange: #f47c20;
+            --bg: #f5f7fa;
+            --text-main: #1f2933;
+            --text-muted: #4b5563;
+            --card-bg: #ffffff;
+            --border-soft: #d0d7e2;
+            --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.06);
+            --radius-lg: 18px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top left, #f9fbff 0, var(--bg) 45%, #eef2f7 100%);
+            color: var(--text-main);
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--orange);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .page {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 28px 16px 40px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .brand-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .brand-text-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--blue-dark);
+        }
+
+        .brand-text-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(244, 124, 32, 0.08);
+            color: var(--orange);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .tag-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background: var(--orange);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.2fr);
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .hero-main {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            padding: 24px 22px 22px;
+            border: 1px solid var(--border-soft);
+        }
+
+        .hero-title {
+            font-size: 30px;
+            line-height: 1.2;
+            margin: 10px 0 8px;
+            color: var(--blue-dark);
+        }
+
+        .hero-highlight {
+            color: var(--orange);
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 18px;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+        }
+
+        .hero-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hero-meta-label {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn-primary,
+        .btn-ghost {
+            border-radius: 999px;
+            padding: 9px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 0;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--orange), #ff9e4f);
+            color: #fff;
+            box-shadow: 0 8px 18px rgba(244, 124, 32, 0.35);
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.05);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--blue-dark);
+            border: 1px solid rgba(11, 46, 77, 0.18);
+        }
+
+        .hero-secondary {
+            border-radius: var(--radius-lg);
+            background: white;
+            box-shadow: var(--shadow-soft);
+            padding: 18px 18px 20px;
+            border: 1px solid rgba(11, 46, 77, 0.08);
+        }
+
+        .hero-secondary-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 0 6px;
+            color: var(--blue-dark);
+        }
+
+        .hero-secondary-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .pill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .pill {
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: rgba(11, 46, 77, 0.07);
+            font-size: 12px;
+            color: var(--blue-dark);
+            font-weight: 500;
+        }
+
+        .hero-secondary-footer {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .hero-secondary-highlight {
+            color: var(--orange);
+            font-weight: 600;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.3fr);
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            padding: 18px 18px 20px;
+            border: 1px solid var(--border-soft);
+        }
+
+        .card-title {
+            font-size: 19px;
+            margin: 0 0 8px;
+            color: var(--blue-dark);
+        }
+
+        .card-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            margin: 0 0 10px;
+            font-size: 15px;
+        }
+
+        .card ul {
+            margin: 0 0 6px 18px;
+            padding: 0;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .card li {
+            margin-bottom: 4px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: rgba(11, 46, 77, 0.06);
+            color: var(--blue-dark);
+            margin-bottom: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 6px 14px;
+            font-size: 14px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .info-value {
+            color: var(--text-muted);
+        }
+
+        .info-frame {
+            width: 100%;
+            min-height: 210px;
+            border: 0;
+            border-radius: 12px;
+            background: #f7f9fc;
+            box-shadow: inset 0 0 0 1px rgba(11, 46, 77, 0.06);
+        }
+
+        footer {
+            margin-top: 28px;
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        @media (max-width: 880px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .hero,
+            .layout {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <header>
+        <div class="brand">
+            <div class="brand-logo">
+                <!-- Use a local copy of the Embedded Labworks logo -->
+                <img src="/images/labworks.png" alt="Embedded Labworks logo">
+            </div>
+            <div>
+                <div class="brand-text-title">Embedded Labworks</div>
+                <div class="brand-text-subtitle">Embedded Security – Hands-on Training Device</div>
+            </div>
+        </div>
+        <div class="tag">
+            <span class="tag-dot"></span>
+            Training Lab Online
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-main">
+            <div class="hero-title">
+                Embedded <span class="hero-highlight">Security</span> training
+            </div>
+            <p class="hero-subtitle">
+                This device is part of the Embedded Security hands-on training by Embedded Labworks.
+                It is used to explore real-world attacks and defenses on embedded Linux systems.
+            </p>
+
+            <div class="hero-meta">
+                <span><span class="hero-meta-label">Duration:</span> 4 days · 32 hours · 50% labs</span>
+                <span><span class="hero-meta-label">Topics:</span>Secure coding, crypto, access control, networking and much more!</span>
+                <span><span class="hero-meta-label">Platform:</span> QEMU</span>
+            </div>
+
+            <div class="hero-actions">
+                <a class="btn-primary" href="https://e-labworks.com/en/training/sec/" target="_blank" rel="noopener">
+                    View training details
+                </a>
+                <a class="btn-ghost" href="https://e-labworks.com/en/" target="_blank" rel="noopener">
+                    Visit Embedded Labworks
+                </a>
+            </div>
+        </div>
+
+        <aside class="hero-secondary">
+            <h2 class="hero-secondary-title">What you will practice on this device</h2>
+            <p class="hero-secondary-text">
+                This target is configured to support the Embedded Security labs, including secure boot,
+                secure storage, network hardening, sandboxing and more.
+            </p>
+            <div class="pill-list">
+                <div class="pill">Threat modeling</div>
+                <div class="pill">Software exploitation</div>
+                <div class="pill">Secure coding</div>
+                <div class="pill">Cryptography</div>
+                <div class="pill">Secure boot</div>
+                <div class="pill">Data encryption</div>
+                <div class="pill">Sandboxing</div>
+                <div class="pill">Access control</div>
+                <div class="pill">Trusted Execution Environment</div>
+                <div class="pill">Networking</div>
+                <div class="pill">Remote updates</div>
+                <div class="pill">Hardware security</div>
+            </div>
+            <div class="hero-secondary-footer">
+                Instructor: <span class="hero-secondary-highlight">Sergio Prado</span> – Embedded systems
+                consultant and trainer.
+            </div>
+        </aside>
+    </section>
+
+    <section class="layout">
+        <article class="card">
+            <h2 class="card-title">About the Embedded Security training</h2>
+            <p class="card-subtitle">
+                A practical, deep-dive course for engineers building secure embedded Linux products.
+            </p>
+            <p>
+                The training starts by revisiting core security concepts like confidentiality, integrity and authenticity,
+                and then moves into threat modeling tailored to embedded systems. You will analyze real devices,
+                attacker profiles and typical vulnerabilities found in the field.
+            </p>
+            <p>
+                From there, the agenda covers secure coding, exploit techniques and modern mitigation strategies,
+                cryptographic fundamentals, secure data-at-rest and data-in-transit, secure boot and chain of trust,
+                access control mechanisms, sandboxing and isolation techniques, Trusted Execution Environments such as
+                OP-TEE, network security, secure OTA updates and hardware security considerations.
+            </p>
+            <p>
+                Labs are performed directly on boards or in QEMU, using the same tools and workflows you would use
+                in a real project: Yocto Project, Linux kernel, bootloaders, firewalls, VPNs, OP-TEE and more.
+                The goal is to build an end-to-end view of how to design, implement and maintain secure embedded systems.
+            </p>
+            <p>
+                For more information about target audience, prerequisites, training format and registration options,
+                please refer to the official training page on the Embedded Labworks website.
+            </p>
+        </article>
+
+        <aside class="card">
+            <div class="badge">Device status</div>
+            <h2 class="card-title">This board right now</h2>
+            <p class="card-subtitle">
+                The information below is generated on the device using a simple shell CGI script.
+                It is useful during the labs to confirm where your code is running.
+            </p>
+
+            <div class="info-grid">
+                <div class="info-label">Hostname, OS &amp; kernel</div>
+                <div class="info-value">Reported directly by the target using standard Linux tools.</div>
+                <div class="info-label">Uptime &amp; load</div>
+                <div class="info-value">Helps you spot long-running sessions or heavy tests.</div>
+                <div class="info-label">IP addresses</div>
+                <div class="info-value">Useful to double-check network exercises and SSH endpoints.</div>
+                <div class="info-label">Root filesystem usage</div>
+                <div class="info-value">Keeps an eye on disk space during experiments.</div>
+            </div>
+
+            <p style="margin-top: 12px; font-size: 13px; color: var(--text-muted);">
+                If you are customizing this training image, feel free to extend the CGI script with your own
+                metrics and diagnostics.
+            </p>
+
+            <iframe class="info-frame" src="/cgi-bin/device-info.sh" title="Device live status"></iframe>
+        </aside>
+    </section>
+
+    <footer>
+        Embedded Labworks – Embedded Security training lab device.
+        For questions about this training, visit
+        <a href="https://e-labworks.com/en/training/sec/" target="_blank" rel="noopener">e-labworks.com</a>.
+    </footer>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTTP status & login demo</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+        }
+        h1 {
+            margin-bottom: 0.3em;
+        }
+        .card {
+            border: 1px solid #ccc;
+            padding: 16px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        label {
+            display: block;
+            margin-top: 8px;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 6px;
+            margin-top: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 12px;
+            padding: 8px 16px;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .ok {
+            color: green;
+        }
+        .error {
+            color: darkred;
+        }
+    </style>
+</head>
+<body>
+
+<h1>HTTP status & login demo</h1>
+
+<div class="card">
+    <h2>Device Status</h2>
+    <p>
+        Click the button below to query the device status.  
+        The request is an HTTP GET to <code>/cgi-bin/status.sh</code>.
+    </p>
+    <button id="btn-status">Get status</button>
+    <h3>Response</h3>
+    <pre id="status-output">(no data yet)</pre>
+</div>
+
+<div class="card">
+    <h2>Login</h2>
+    <p>
+        Use the form below to send a username and password to the device.  
+        The request is an HTTP POST to <code>/cgi-bin/login.sh</code>.
+    </p>
+
+    <form id="login-form">
+        <label>
+            Username
+            <input type="text" id="username" name="username" value="admin">
+        </label>
+        <label>
+            Password
+            <input type="password" id="password" name="password" value="SuperSecret123">
+        </label>
+        <button type="submit">Send login</button>
+    </form>
+
+    <h3>Result</h3>
+    <p id="login-result">(no attempt yet)</p>
+
+    <h3>Raw JSON response</h3>
+    <pre id="login-output">(no data yet)</pre>
+</div>
+
+<script>
+    // GET /cgi-bin/status.sh
+    document.getElementById("btn-status").addEventListener("click", function () {
+        fetch("/cgi-bin/status.sh")
+            .then(function (response) { return response.json(); })
+            .then(function (data) {
+                document.getElementById("status-output").textContent =
+                    JSON.stringify(data, null, 2);
+            })
+            .catch(function (err) {
+                document.getElementById("status-output").textContent =
+                    "Error fetching status: " + err;
+            });
+    });
+
+    // POST /cgi-bin/login.sh
+    document.getElementById("login-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        const formData = new URLSearchParams();
+        formData.append("username", username);
+        formData.append("password", password);
+
+        fetch("/cgi-bin/login.sh", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: formData.toString()
+        })
+            .then(function (response) {
+                return response.json().then(function (data) {
+                    return { status: response.status, body: data };
+                });
+            })
+            .then(function (result) {
+                const msgElem = document.getElementById("login-result");
+                const outElem = document.getElementById("login-output");
+
+                outElem.textContent = JSON.stringify(result.body, null, 2);
+
+                if (result.body.status === "ok") {
+                    msgElem.textContent = "Login successful for user: " + username;
+                    msgElem.className = "ok";
+                } else {
+                    msgElem.textContent = "Login failed: " + (result.body.message || "unknown error");
+                    msgElem.className = "error";
+                }
+            })
+            .catch(function (err) {
+                document.getElementById("login-result").textContent =
+                    "Error sending login request: " + err;
+                document.getElementById("login-result").className = "error";
+            });
+    });
+</script>
+
+</body>
+</html>
