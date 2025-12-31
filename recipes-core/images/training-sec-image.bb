@@ -104,6 +104,7 @@ IMAGE_INSTALL_UPDATE_TOOLS = "\
     u-boot-default-env \
     libubootenv-bin \
     mtd-utils \
+    rauc \
 "
 
 IMAGE_INSTALL = "\

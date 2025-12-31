@@ -1,3 +1,50 @@
 echo "=== Booting from U-Boot boot script ==="
 
+test -n "${BOOT_ORDER}" || setenv BOOT_ORDER "A B"
+test -n "${BOOT_A_LEFT}" || setenv BOOT_A_LEFT 3
+test -n "${BOOT_B_LEFT}" || setenv BOOT_B_LEFT 3
+
+setenv bootargs_default "ip=192.168.7.2::192.168.7.1:255.255.255.0::eth0:off:8.8.8.8 net.ifnames=0 console=ttyAMA0 console=hvc0 swiotlb=0"
+
+setenv rootfs_partition
+setenv rauc_slot
+
+echo "=== Determining active slot to be booted ==="
+for slot in "${BOOT_ORDER}"; do
+  if test "x${rauc_slot}" != "x"; then
+    # rauc_slot already found, performing no-op
+    echo "[DEBUG] Skipping ${slot} slot..."
+  elif test "x${slot}" = "xA"; then
+    if test ${BOOT_A_LEFT} -gt 0; then
+      setexpr BOOT_A_LEFT ${BOOT_A_LEFT} - 1
+      setenv rootfs_partition "2"
+      setenv rauc_slot "A"
+      echo "[INFO] Selected rootfs slot A!"
+    fi
+  elif test "x${slot}" = "xB"; then
+    if test ${BOOT_B_LEFT} -gt 0; then
+      setexpr BOOT_B_LEFT ${BOOT_B_LEFT} - 1
+      setenv rootfs_partition "3"
+      setenv rauc_slot "B"
+      echo "[INFO] Selected rootfs slot B!"
+    fi
+  fi
+done
+
+if test "x${rauc_slot}" = "x"; then
+  echo "[ERROR] No valid slot found! Resetting tries to 3 and exiting script..."
+  setenv BOOT_A_LEFT 3
+  setenv BOOT_B_LEFT 3
+  saveenv
+  exit
+fi
+
+echo "=== Setting bootargs (rootfs in p${rootfs_partition} and slot ${rauc_slot}) ==="
+setenv bootargs "${bootargs_default} root=/dev/vda${rootfs_partition} rw rootfstype=ext4 rauc.slot=${rauc_slot}"
+echo "[DEBUG] bootargs: ${bootargs}"
+
+echo "=== Persisting environment in flash ==="
+saveenv
+
+echo "=== Booting the system now! ==="
 bootm ${fit_addr_r}#conf-qemuarm64.dtb
