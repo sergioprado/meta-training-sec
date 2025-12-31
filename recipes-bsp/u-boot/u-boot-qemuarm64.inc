@@ -1,5 +1,6 @@
 SRC_URI:append = "\
     file://qemuarm64-custom.cfg \
+    file://boot.cmd \
 "
 
 do_compile:append:signed() {
