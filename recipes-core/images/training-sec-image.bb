@@ -100,6 +100,12 @@ IMAGE_INSTALL_KERNEL = "\
     kernel-modules \
 "
 
+IMAGE_INSTALL_UPDATE_TOOLS = "\
+    u-boot-default-env \
+    libubootenv-bin \
+    mtd-utils \
+"
+
 IMAGE_INSTALL = "\
     packagegroup-core-boot \
     ${CORE_IMAGE_EXTRA_INSTALL} \
@@ -116,6 +122,7 @@ IMAGE_INSTALL = "\
     ${IMAGE_INSTALL_EDITORS} \
     ${IMAGE_INSTALL_UTILS} \
     ${IMAGE_INSTALL_KERNEL} \
+    ${IMAGE_INSTALL_UPDATE_TOOLS} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'selinux', '${IMAGE_INSTALL_SELINUX}', '', d)} \
 "
 

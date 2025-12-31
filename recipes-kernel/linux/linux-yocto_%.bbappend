@@ -1,6 +1,7 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI:append = "\
+    file://mtd.cfg \
     file://asan.cfg \
     file://dm-verity.cfg \
     file://dm-integrity.cfg \

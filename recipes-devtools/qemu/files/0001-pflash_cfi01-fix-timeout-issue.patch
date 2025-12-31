@@ -1,0 +1,62 @@
+From 76c550cb050017c6516a527f844e0a05138ab78b Mon Sep 17 00:00:00 2001
+From: Sergio Prado <sergio.prado@e-labworks.com>
+Date: Wed, 31 Dec 2025 11:18:31 -0300
+Subject: [PATCH] pflash_cfi01: fix timeout issue
+
+Fix timeout issue when writing to emulated flash device:
+
+=> saveenv
+Saving Environment to Flash...Un-Protected 2 sectors
+Erasing Flash... done
+Erased 2 sectors
+Writing to Flash...
+Flash buffer write timeout at address 4020000 data 0
+Timeout writing to Flash
+Protected 2 sectors
+Failed (1)
+
+Fix from https://mickey-happygolucky.hatenablog.com/entry/2025/08/02/153039
+
+Upstream-Status: Pending
+
+Signed-off-by: Sergio Prado <sergio.prado@e-labworks.com>
+---
+ hw/block/pflash_cfi01.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/hw/block/pflash_cfi01.c b/hw/block/pflash_cfi01.c
+index 5e848a9b4c15..168fba145444 100644
+--- a/hw/block/pflash_cfi01.c
++++ b/hw/block/pflash_cfi01.c
+@@ -518,10 +518,6 @@ static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
+             break;
+         case 0xe8: /* Write to buffer */
+             trace_pflash_write(pfl->name, "write to buffer");
+-            /* FIXME should save @offset, @width for case 1+ */
+-            qemu_log_mask(LOG_UNIMP,
+-                          "%s: Write to buffer emulation is flawed\n",
+-                          __func__);
+             pfl->status |= 0x80; /* Ready! */
+             break;
+         case 0xf0: /* Probe for AMD flash */
+@@ -574,7 +570,6 @@ static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
+             }
+             pfl->counter = value;
+             pfl->wcycle++;
+-            pflash_blk_write_start(pfl, offset);
+             break;
+         case 0x60:
+             if (cmd == 0xd0) {
+@@ -605,6 +600,9 @@ static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
+         switch (pfl->cmd) {
+         case 0xe8: /* Block write */
+             /* FIXME check @offset, @width */
++            if (pfl->blk_offset == -1 && pfl->counter) {
++                pflash_blk_write_start(pfl, offset);
++            }
+             if (!pfl->ro && (pfl->blk_offset != -1)) {
+                 pflash_data_write(pfl, offset, value, width, be);
+             } else {
+-- 
+2.34.1
+
