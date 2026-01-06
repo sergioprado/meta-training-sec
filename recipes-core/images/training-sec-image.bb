@@ -94,6 +94,7 @@ IMAGE_INSTALL_UTILS = "\
     libcap-bin \
     auditd \
     tree \
+    expat-bin \
 "
 
 IMAGE_INSTALL_KERNEL = "\
