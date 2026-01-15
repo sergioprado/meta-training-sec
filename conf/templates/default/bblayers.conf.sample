@@ -1,0 +1,22 @@
+POKY_BBLAYERS_CONF_VERSION = "2"
+
+BBPATH = "${TOPDIR}"
+BBFILES ?= ""
+
+BBLAYERS ?= " \
+  ${TOPDIR}/../layers/poky/meta \
+  ${TOPDIR}/../layers/poky/meta-poky \
+  ${TOPDIR}/../layers/meta-openembedded/meta-oe \
+  ${TOPDIR}/../layers/meta-openembedded/meta-python \
+  ${TOPDIR}/../layers/meta-openembedded/meta-networking \
+  ${TOPDIR}/../layers/meta-openembedded/meta-filesystems \
+  ${TOPDIR}/../layers/meta-openembedded/meta-webserver \
+  ${TOPDIR}/../layers/meta-security \
+  ${TOPDIR}/../layers/meta-security/meta-tpm \
+  ${TOPDIR}/../layers/meta-arm/meta-arm \
+  ${TOPDIR}/../layers/meta-arm/meta-arm-toolchain \
+  ${TOPDIR}/../layers/meta-selinux \
+  ${TOPDIR}/../layers/meta-virtualization \
+  ${TOPDIR}/../layers/meta-rauc \
+  ${TOPDIR}/../layers/meta-training-sec \
+"
