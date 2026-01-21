@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 MACHINE="qemuarm64"
 IMGDIR="$PWD/tmp-glibc/deploy/images/$MACHINE"
