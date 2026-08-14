@@ -16,10 +16,10 @@ SRC_URI:append = "\
 "
 
 do_configure:append() {
-    cp ${WORKDIR}/devkey.pem ${S}/certs/devkey.pem
-    cat ${WORKDIR}/devkey-cert.pem >> ${S}/certs/devkey.pem
-
-    cp ${WORKDIR}/devkey-cert.pem ${S}/certs/devkey-cert.pem
+    mkdir -p ${B}/certs/
+    cp  ${WORKDIR}/devkey.pem ${B}/certs/devkey.pem
+    cat ${WORKDIR}/devkey-cert.pem >> ${B}/certs/devkey.pem
+    cp  ${WORKDIR}/devkey-cert.pem ${B}/certs/devkey-cert.pem
 }
 
 # include any machine specific configuration
